@@ -1,0 +1,1001 @@
+{
+	"info": {
+		"_postman_id": "9c8b0f0a-00d6-4062-80f7-9b5c72d6bec6",
+		"name": "YellowSoap Rest APIs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Log In",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "59c3fa3a-7801-4955-aca8-acfa093fcc1f",
+						"exec": [
+							"pm.test(\"Response Is Ok\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"var token = JSON.stringify(jsonData.token);",
+							"console.log(token);",
+							"token = token.replace(/\"/g, \"\");",
+							"if(token){",
+							"    postman.setEnvironmentVariable(\"token\", token);    ",
+							"}else {",
+							"    //something horrible happened.",
+							"    postman.setNextRequest(null);",
+							"}",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"clientId\" : {{clientId}},\n\t\"password\" : {{password}},\n\t\"username\" : {{username}}\n}"
+				},
+				"url": {
+					"raw": "{{hostname}}/rest/v1/token",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"rest",
+						"v1",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Start Transaction",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a2ac01bb-cca1-44ca-9bf8-8580a621db77",
+						"exec": [
+							"pm.test(\"Response Is Ok\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"var transactionId = JSON.stringify(jsonData.id);",
+							"if(transactionId){",
+							"    postman.setEnvironmentVariable(\"transactionId\", transactionId);    ",
+							"}else {",
+							"    //something horrible happened.",
+							"    postman.setNextRequest(null);",
+							"}",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"cardCode\": {{cardCode}},\n  \"countryCode\": {{countryCode}},\n  \"licensePlate\": {{licensePlate}},\n  \"zoneCode\": {{zoneCode}},\n  \"latitude\": {{latitude}},\n  \"longitude\": {{longitude}}\n}"
+				},
+				"url": {
+					"raw": "{{hostname}}/rest/v1/transactions",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"rest",
+						"v1",
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Open Transaction",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "40c342d0-fe88-424c-8b35-dceec18d5b6b",
+						"exec": [
+							"pm.test(\"Response Is Ok\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"var requestFailed = 0;",
+							"var transactionId = postman.getEnvironmentVariable('transactionId');",
+							"",
+							"for(var i = 0; i < jsonData.length; ++i){",
+							"    response = jsonData[0].runningTransaction;",
+							"    if(!response){",
+							"        requestFailed = 1;",
+							"        console.log(\"No property found runningTransaction\");",
+							"        break;",
+							"    }",
+							"    var endTime = response.endTime;",
+							"    if(endTime == null){ ",
+							"        /* There is an active parking */",
+							"        var currentTransactionId = postman.getEnvironmentVariable(\"transactionId\");",
+							"        if(currentTransactionId != transactionId){",
+							"            console.log(\"Opened transaction doesn't match\");",
+							"            requestFailed = 1;",
+							"        }",
+							"    }",
+							"}",
+							"",
+							"if(requestFailed == 1){",
+							"    console.log(\"Couldn't find any open transaction\");",
+							"    postman.setNextRequest(null);",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "{{hostname}}/rest/v1/transpondercards",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"rest",
+						"v1",
+						"transpondercards"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Stop Transaction",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "30a5f35c-c990-4015-86b9-def7481a27d7",
+						"exec": [
+							"pm.test(\"Response Is Ok\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{hostname}}/rest/v1/transactions/{{transactionId}}/stop",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"rest",
+						"v1",
+						"transactions",
+						"{{transactionId}}",
+						"stop"
+					]
+				},
+				"description": "Stop Transaction"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Transaction History",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8e010d97-1369-431e-b466-418229529b2d",
+						"exec": [
+							"pm.test(\"Response Is Ok\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "{{hostname}}/rest/v1/transaction_history",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"rest",
+						"v1",
+						"transaction_history"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Parking Zone details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8d11e614-e012-4657-8825-52dad83615ca",
+						"exec": [
+							"pm.test(\"Response Is Ok\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "{{hostname}}/rest/v1/parkingzones/{{zoneCodeId}}",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"rest",
+						"v1",
+						"parkingzones",
+						"{{zoneCodeId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Nearby Parking zones",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "506b981b-db17-448f-82c8-7539980b721a",
+						"exec": [
+							"pm.test(\"Response Is Ok\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "{{hostname}}/rest/v1/parkingzones?lat=52.334618&lng=4.927188&maxResults=3",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"rest",
+						"v1",
+						"parkingzones"
+					],
+					"query": [
+						{
+							"key": "lat",
+							"value": "52.334618"
+						},
+						{
+							"key": "lng",
+							"value": "4.927188"
+						},
+						{
+							"key": "maxResults",
+							"value": "3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Nearby Parking Advice",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fdb16eb9-9401-41a1-86e9-46781350099d",
+						"exec": [
+							"pm.test(\"Response Is Ok\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "{{hostname}}/rest/v1/parkingadvice?lat=52.34277&lng=4.90373",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"rest",
+						"v1",
+						"parkingadvice"
+					],
+					"query": [
+						{
+							"key": "lat",
+							"value": "52.34277"
+						},
+						{
+							"key": "lng",
+							"value": "4.90373"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Password Reset",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6bc4b022-8591-4ae0-8709-dd3d06173890",
+						"exec": [
+							"pm.test(\"Response Is Ok\", function () {",
+							"    pm.response.to.have.status(204);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{hostname}}/rest/v1/users/{{username}}/passwordReset",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"rest",
+						"v1",
+						"users",
+						"{{username}}",
+						"passwordReset"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User Details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c90aaf9c-1092-4738-ae8a-09a89c093e65",
+						"exec": [
+							"pm.test(\"Response Is Ok\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "{{hostname}}/rest/v1/users/{{username}}",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"rest",
+						"v1",
+						"users",
+						"{{username}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get news",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "804782ff-8c3d-4fb7-a080-151617215387",
+						"exec": [
+							"pm.test(\"Response Is Ok\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "{{hostname}}/rest/v1/news",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"rest",
+						"v1",
+						"news"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Disclaimer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "942b1030-a63c-4e6a-8521-8f9091cab3e3",
+						"exec": [
+							"pm.test(\"Response Is Ok\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "{{hostname}}/rest/v1/messages/disclaimer",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"rest",
+						"v1",
+						"messages",
+						"disclaimer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Locations",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d64106a2-b3fd-41d0-8a70-5ffb10b9e731",
+						"exec": [
+							"pm.test(\"Response Is Ok\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "{{hostname}}/rest/v1/locations",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"rest",
+						"v1",
+						"locations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "License Plate Countries",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d9996e3c-686e-465d-bfb3-a9e6914935e6",
+						"exec": [
+							"pm.test(\"Response Is Ok\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "{{hostname}}/rest/v1/license_plate_countries",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"rest",
+						"v1",
+						"license_plate_countries"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Signup Request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "89d52ff6-3884-4fa6-92ff-37cd5866cb2a",
+						"exec": [
+							"pm.test(\"Response Is Ok\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\" : {{new_email_address}}\n}"
+				},
+				"url": {
+					"raw": "{{hostname}}/rest/v1/signup_request",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"rest",
+						"v1",
+						"signup_request"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Localized Messages",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "323e1fa3-c7fa-4339-9347-f43ea944dcaf",
+						"exec": [
+							"pm.test(\"Response Is Ok\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "{{hostname}}/rest/v1/I18N.message?source=APP&version=500&messageVersion=1520325907773",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"rest",
+						"v1",
+						"I18N.message"
+					],
+					"query": [
+						{
+							"key": "source",
+							"value": "APP"
+						},
+						{
+							"key": "version",
+							"value": "500"
+						},
+						{
+							"key": "messageVersion",
+							"value": "1520325907773"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d9dcd265-3e75-45cc-8b8c-6bddbe29dd98",
+						"exec": [
+							"pm.test(\"Response Is Ok\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\" : {{new_email_address}}\n}"
+				},
+				"url": {
+					"raw": "{{hostname}}/rest/v1/users/{{username}}",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"rest",
+						"v1",
+						"users",
+						"{{username}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update User again",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d9dcd265-3e75-45cc-8b8c-6bddbe29dd98",
+						"exec": [
+							"pm.test(\"Response Is Ok\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\" : {{new_email_address}}\n}"
+				},
+				"url": {
+					"raw": "{{hostname}}/rest/v1/users/{{username}}",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"rest",
+						"v1",
+						"users",
+						"{{username}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

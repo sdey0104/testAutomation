@@ -1,0 +1,11 @@
+.classpath
+*.log
+logs/
+/logs/
+.project
+.settings/
+.target/
+.iml
+/bin/
+/target/
+/logs/

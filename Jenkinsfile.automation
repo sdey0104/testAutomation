@@ -1,0 +1,60 @@
+def runCommand(String command) {
+    if (isUnix()) {
+         	sh command
+      	} else {
+         	bat command
+    }
+}
+
+pipeline {
+    agent { label 'automation' }
+    options {
+        skipStagesAfterUnstable()
+    }
+    parameters {
+        choice(choices: ['NL', 'DE', 'BE'], description: 'Which country?', name: 'country')
+        choice(choices: ['ACC', 'SIT'], description: 'Which environment?', name: 'environment')
+        choice(choices: ['-Dcucumber.options="--tags @regression"',
+                         '-Dcucumber.options="--tags @smoke"',
+                         '-Dcucumber.options="--tags @ChangePassword"',
+                         '-Dcucumber.options="--tags @crossbrowsertest"',
+                         '-Dcucumber.options="--tags @restIVR"',
+                         '-Dcucumber.options="--tags @manualvalidation"',
+                         '-Dcucumber.options="--tags @myybchangepaymentmethod"',
+                         '-Dcucumber.options="--tags @ordering"',
+                         '-Dcucumber.options="--tags @personalDetails"',
+                         '-Dcucumber.options="--tags @RegBasic"',
+                         '-Dcucumber.options="--tags @registrationFieldValidation"'], description: 'Which suite?', name: 'suite')
+    }
+
+    stages {
+        stage('Build') {
+            steps { 
+                withMaven(
+                    maven: 'maven3.2.2'
+                ) {
+                    runCommand("mvn clean package -DskipTests")
+                }
+            }
+        }
+
+        stage('Run automation') {
+            steps { 
+                withMaven(
+                    maven: 'maven3.2.2'
+                ) {
+                    runCommand("mvn test -Dcountry=${params.country} -Denvironment=${params.environment} ${params.suite}")
+                }
+            }
+        }
+
+        stage('Generate HTML report') {
+            steps {
+                cucumber buildStatus: 'STABLE',
+                fileIncludePattern: '**/cucumber.json',
+                classifications: [
+                ]
+            }
+        }
+    }
+}

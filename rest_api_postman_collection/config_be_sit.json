@@ -1,0 +1,154 @@
+{
+	"id": "6869a1ec-339f-4462-bf65-587181620091",
+	"name": "yellowsoap_be_sit",
+	"values": [
+		{
+			"key": "hostname",
+			"value": "https://be-sit.brickparking.com/YellowSoap",
+			"description": {
+				"content": "",
+				"type": "text/plain"
+			},
+			"enabled": true
+		},
+		{
+			"key": "clientId",
+			"value": "3214027",
+			"description": {
+				"content": "",
+				"type": "text/plain"
+			},
+			"enabled": true
+		},
+		{
+			"key": "password",
+			"value": "\"TEST-BE-01\"",
+			"description": {
+				"content": "",
+				"type": "text/plain"
+			},
+			"enabled": true
+		},
+		{
+			"key": "username",
+			"value": "3214027",
+			"description": {
+				"content": "",
+				"type": "text/plain"
+			},
+			"enabled": true
+		},
+		{
+			"key": "cardCode",
+			"value": "\"7886026529\"",
+			"description": {
+				"content": "",
+				"type": "text/plain"
+			},
+			"enabled": true
+		},
+		{
+			"key": "freeZoneCode",
+			"value": "\"999999\"",
+			"description": {
+				"content": "",
+				"type": "text/plain"
+			},
+			"enabled": true
+		},
+		{
+			"key": "licensePlate",
+			"value": "\"AD23986\"",
+			"description": {
+				"content": "",
+				"type": "text/plain"
+			},
+			"enabled": true
+		},
+		{
+			"key": "latitude",
+			"value": "52.334745",
+			"description": {
+				"content": "",
+				"type": "text/plain"
+			},
+			"enabled": true
+		},
+		{
+			"key": "longitude",
+			"value": "4.927510",
+			"description": {
+				"content": "",
+				"type": "text/plain"
+			},
+			"enabled": true
+		},
+		{
+			"key": "zoneCode",
+			"value": "\"1481030\"",
+			"description": {
+				"content": "",
+				"type": "text/plain"
+			},
+			"enabled": true
+		},
+		{
+			"key": "countryCode",
+			"value": "\"NL\"",
+			"description": {
+				"content": "",
+				"type": "text/plain"
+			},
+			"enabled": true
+		},
+		{
+			"key": "zoneCodeId",
+			"value": "1481030",
+			"description": {
+				"content": "",
+				"type": "text/plain"
+			},
+			"enabled": true
+		},
+		{
+			"key": "email_address",
+			"value": "testteam@brickparking.com\"om\"",
+			"description": {
+				"content": "",
+				"type": "text/plain"
+			},
+			"enabled": true
+		},
+		{
+			"key": "new_email_address",
+			"value": "\"myemail_address@gmail.com\"",
+			"description": {
+				"content": "",
+				"type": "text/plain"
+			},
+			"enabled": true
+		},
+		{
+			"key": "label_key",
+			"value": "\"label286\"",
+			"description": {
+				"content": "",
+				"type": "text/plain"
+			},
+			"enabled": true
+		},
+		{
+			"key": "token",
+			"value": "4f63683e-7756-44d7-bac4-ecbcf2dfb8d0",
+			"enabled": true
+		},
+		{
+			"key": "transactionId",
+			"value": "7478737",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2018-11-26T15:54:32.330Z",
+	"_postman_exported_using": "Postman/6.4.4"
+}

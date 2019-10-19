@@ -1,0 +1,154 @@
+{
+  "id": "5d99a3d9-8c98-42e3-b7a1-d672a89739cb",
+  "name": "yellowsoap_prod",
+  "values": [
+    {
+      "key": "hostname",
+      "value": "http://192.168.1.202:8081/YellowSoap",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "enabled": true
+    },
+    {
+      "key": "clientId",
+      "value": "1235221",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "enabled": true
+    },
+    {
+      "key": "password",
+      "value": "\"y0632756242\"",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "enabled": true
+    },
+    {
+      "key": "username",
+      "value": "1235221",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "enabled": true
+    },
+    {
+      "key": "cardCode",
+      "value": "\"510032813\"",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "enabled": true
+    },
+    {
+      "key": "freeZoneCode",
+      "value": "\"999999\"",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "enabled": true
+    },
+    {
+      "key": "licensePlate",
+      "value": "\"64-XBF-6\"",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "enabled": true
+    },
+    {
+      "key": "latitude",
+      "value": "52.334745",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "enabled": true
+    },
+    {
+      "key": "longitude",
+      "value": "4.927510",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "enabled": true
+    },
+    {
+      "key": "zoneCode",
+      "value": "\"999999\"",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "enabled": true
+    },
+    {
+      "key": "countryCode",
+      "value": "\"NL\"",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "enabled": true
+    },
+    {
+      "key": "transactionId",
+      "value": "74593824",
+      "enabled": true
+    },
+    {
+      "key": "token",
+      "value": "8489dc48-145a-4b8f-b7f1-871758dc58b9",
+      "enabled": true
+    },
+    {
+      "key": "zoneCodeId",
+      "value": "999999",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "enabled": true
+    },
+    {
+      "key": "email_address",
+      "value": "\"k.sohel@yellowbrickinternational.com\"",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "enabled": true
+    },
+    {
+      "key": "new_email_address",
+      "value": "\"myemail_address@gmail.com\"",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "enabled": true
+    },
+    {
+      "key": "label_key",
+      "value": "\"label286\"",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "enabled": true
+    }
+  ],
+  "_postman_variable_scope": "environment",
+  "_postman_exported_at": "2018-10-18T09:55:56.389Z",
+  "_postman_exported_using": "Postman/6.3.0"
+}
